@@ -1,0 +1,17 @@
+{
+  "author": "dgw0103",
+  "bugs": {
+    "url": "https://github.com/dgw0103/AddressablesUtility/issues"
+  },
+  "description": "Addressables utility",
+  "displayName": "AddressablesUtility",
+  "hideInEditor": "false",
+  "homepage": "https://github.com/dgw0103/AddressablesUtility.git",
+  "license": "MIT",
+  "name": "com.dgw0103.addressablesutility",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dgw0103/AddressablesUtility.git"
+  },
+  "version": "0.0.0"
+}
