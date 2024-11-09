@@ -8,33 +8,32 @@ using System.Threading;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using UnityEditor.PackageManager.UI;
-using UnityEditor.TextCore.Text;
-using UnityEditor.TextCore;
 
 [InitializeOnLoad]
-public class InitializationInEditor : AssetPostprocessor
+public class InitializationInEditor
 {
     static InitializationInEditor()
     {
         Debug.Log(nameof(InitializationInEditor));
-        if (SessionState.GetBool(SessionKey, default))
-        {
-            Debug.Log("session is already set");
-            return;
-        }
-
-        SessionState.SetBool(SessionKey, true);
-        Initialize();
+        Events.registeredPackages -= AddAndRemoveDependencies;
+        Events.registeredPackages += AddAndRemoveDependencies;
     }
 
 
 
-    private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+    private static void AddAndRemoveDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
     {
-        Debug.Log(nameof(OnPostprocessAllAssets));
+        if (packageRegistrationEventArgs.added.Any((x) => x.name == "com.dgw0103.addressablesutility"))
+        {
+            Client.Add("https://github.com/dgw0103/UnityUtility.git");
+        }
+        else if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
+        {
+            Client.Remove("https://github.com/dgw0103/UnityUtility.git");
+            Events.registeredPackages -= AddAndRemoveDependencies;
+        }
     }
-    private static string SessionKey { get => typeof(InitializationInEditor).Assembly + typeof(InitializationInEditor).FullName; }
+    private static string Key { get => typeof(InitializationInEditor).Assembly + typeof(InitializationInEditor).FullName; }
     private static async void Initialize()
     {
         Debug.Log(nameof(Initialize));
