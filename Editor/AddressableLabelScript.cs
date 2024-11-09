@@ -16,6 +16,7 @@ internal class AddressableLabelScript
     {
         if (arg2 == AddressableAssetSettings.ModificationEvent.LabelAdded || arg2 == AddressableAssetSettings.ModificationEvent.LabelRemoved)
         {
+#if INCLUDE_UNITYUTILITY
             CodeWriter codeWriter = new CodeWriter();
 
             codeWriter.WriteLine("using System;");
@@ -30,6 +31,9 @@ internal class AddressableLabelScript
             
             File.WriteAllText(AddressableLabelScriptWindow.FilePath, codeWriter.ToString());
             AssetDatabase.Refresh();
+#else
+            Debug.LogWarning("To use this package, add package in \"https://github.com/dgw0103/UnityUtility.git\".");
+#endif
         }
 
     }
