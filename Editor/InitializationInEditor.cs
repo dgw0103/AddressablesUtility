@@ -13,12 +13,14 @@ using UnityEditor.TextCore.Text;
 using UnityEditor.TextCore;
 
 [InitializeOnLoad]
-public class InitializationInEditor
+public class InitializationInEditor : AssetPostprocessor
 {
     static InitializationInEditor()
     {
+        Debug.Log(nameof(InitializationInEditor));
         if (SessionState.GetBool(SessionKey, default))
         {
+            Debug.Log("session is already set");
             return;
         }
 
@@ -28,9 +30,14 @@ public class InitializationInEditor
 
 
 
+    private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+    {
+        Debug.Log(nameof(OnPostprocessAllAssets));
+    }
     private static string SessionKey { get => typeof(InitializationInEditor).Assembly + typeof(InitializationInEditor).FullName; }
     private static async void Initialize()
     {
+        Debug.Log(nameof(Initialize));
         bool isPackageInstalled = await IsPackageInstalled();
 
         if (isPackageInstalled == false)
