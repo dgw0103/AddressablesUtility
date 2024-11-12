@@ -15,8 +15,8 @@ public class InitializationInEditor
     static InitializationInEditor()
     {
         Debug.Log(nameof(InitializationInEditor));
-        Events.registeredPackages -= RemoveDependencies;
-        Events.registeredPackages += RemoveDependencies;
+        Events.registeringPackages -= RemoveDependencies;
+        Events.registeringPackages += RemoveDependencies;
         Events.registeredPackages -= AddDependencies;
         Events.registeredPackages += AddDependencies;
     }
