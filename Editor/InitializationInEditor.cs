@@ -9,15 +9,20 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 
+[InitializeOnLoad]
 public class InitializationInEditor : AssetPostprocessor
 {
-    private void OnPreprocessAsset()
+    static InitializationInEditor()
     {
-        Debug.Log("update events");
-        Events.registeringPackages -= RemoveDependencies;
-        Events.registeringPackages += RemoveDependencies;
+        Debug.Log(nameof(InitializationInEditor));
         Events.registeredPackages -= AddDependencies;
         Events.registeredPackages += AddDependencies;
+    }
+    private void OnPreprocessAsset()
+    {
+        Debug.Log(nameof(OnPreprocessAsset));
+        Events.registeringPackages -= RemoveDependencies;
+        Events.registeringPackages += RemoveDependencies;
     }
 
 
