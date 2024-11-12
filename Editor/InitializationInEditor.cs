@@ -15,34 +15,30 @@ public class InitializationInEditor
     static InitializationInEditor()
     {
         Debug.Log(nameof(InitializationInEditor));
-        Events.registeredPackages -= AddAndRemoveDependencies;
-        Events.registeredPackages += AddAndRemoveDependencies;
+        Events.registeringPackages -= RemoveDependencies;
+        Events.registeringPackages += RemoveDependencies;
+        Events.registeredPackages -= AddDependencies;
+        Events.registeredPackages += AddDependencies;
     }
 
 
 
-    private static void AddAndRemoveDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
+    private static void AddDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
     {
+        Debug.Log(nameof(AddDependencies));
         if (packageRegistrationEventArgs.added.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
             Client.Add("https://github.com/dgw0103/UnityUtility.git");
         }
-        else if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
+    }
+    private static void RemoveDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
+    {
+        Debug.Log(nameof(RemoveDependencies));
+        if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
             Client.Remove("https://github.com/dgw0103/UnityUtility.git");
-            Events.registeredPackages -= AddAndRemoveDependencies;
-        }
-    }
-    private static string Key { get => typeof(InitializationInEditor).Assembly + typeof(InitializationInEditor).FullName; }
-    private static async void Initialize()
-    {
-        Debug.Log(nameof(Initialize));
-        bool isPackageInstalled = await IsPackageInstalled();
-
-        if (isPackageInstalled == false)
-        {
-            Debug.Log("add unity utility");
-            Client.Add("https://github.com/dgw0103/UnityUtility.git");
+            Events.registeringPackages -= RemoveDependencies;
+            Events.registeredPackages -= AddDependencies;
         }
     }
     private static async Task<bool> IsPackageInstalled()
