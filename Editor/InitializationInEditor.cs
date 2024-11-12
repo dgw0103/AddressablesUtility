@@ -32,6 +32,7 @@ public class InitializationInEditor
         }
         if (packageRegistrationEventArgs.added.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
+            Debug.Log("add https://github.com/dgw0103/UnityUtility.git");
             Client.Add("https://github.com/dgw0103/UnityUtility.git");
         }
     }
@@ -44,6 +45,7 @@ public class InitializationInEditor
         }
         if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
+            Debug.Log("remove https://github.com/dgw0103/UnityUtility.git");
             Client.Remove("https://github.com/dgw0103/UnityUtility.git");
             Events.registeringPackages -= RemoveDependencies;
             Events.registeredPackages -= AddDependencies;
