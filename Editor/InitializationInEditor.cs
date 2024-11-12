@@ -15,8 +15,8 @@ public class InitializationInEditor
     static InitializationInEditor()
     {
         Debug.Log(nameof(InitializationInEditor));
-        Events.registeringPackages -= RemoveDependencies;
-        Events.registeringPackages += RemoveDependencies;
+        Events.registeredPackages -= RemoveDependencies;
+        Events.registeredPackages += RemoveDependencies;
         Events.registeredPackages -= AddDependencies;
         Events.registeredPackages += AddDependencies;
     }
@@ -25,7 +25,11 @@ public class InitializationInEditor
 
     private static void AddDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
     {
-        Debug.Log(nameof(AddDependencies));
+        Debug.Log("add----------------------");
+        foreach (var item in packageRegistrationEventArgs.added)
+        {
+            Debug.Log(item.name);
+        }
         if (packageRegistrationEventArgs.added.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
             Client.Add("https://github.com/dgw0103/UnityUtility.git");
@@ -33,7 +37,11 @@ public class InitializationInEditor
     }
     private static void RemoveDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
     {
-        Debug.Log(nameof(RemoveDependencies));
+        Debug.Log("remove----------------------");
+        foreach (var item in packageRegistrationEventArgs.removed)
+        {
+            Debug.Log(item.name);
+        }
         if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
             Client.Remove("https://github.com/dgw0103/UnityUtility.git");
