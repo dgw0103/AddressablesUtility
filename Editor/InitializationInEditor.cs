@@ -9,12 +9,11 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 
-[InitializeOnLoad]
-public class InitializationInEditor
+public class InitializationInEditor : AssetPostprocessor
 {
-    static InitializationInEditor()
+    private void OnPreprocessAsset()
     {
-        Debug.Log(nameof(InitializationInEditor));
+        Debug.Log("update events");
         Events.registeringPackages -= RemoveDependencies;
         Events.registeringPackages += RemoveDependencies;
         Events.registeredPackages -= AddDependencies;
@@ -25,7 +24,7 @@ public class InitializationInEditor
 
     private static void AddDependencies(PackageRegistrationEventArgs packageRegistrationEventArgs)
     {
-        Debug.Log("add----------------------");
+        Debug.Log("add-----------------------");
         foreach (var item in packageRegistrationEventArgs.added)
         {
             Debug.Log(item.name);
