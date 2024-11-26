@@ -40,10 +40,15 @@ public class InitializationInEditor : AssetPostprocessor
         if (packageRegistrationEventArgs.removed.Any((x) => x.name == "com.dgw0103.addressablesutility"))
         {
             Debug.Log("remove https://github.com/dgw0103/UnityUtility.git");
-            Client.Remove("https://github.com/dgw0103/UnityUtility.git");
+            RemoveRequest removeRequest = Client.Remove("https://github.com/dgw0103/UnityUtility.git");
+            Wait(removeRequest);
             Events.registeringPackages -= RemoveDependencies;
             Events.registeredPackages -= AddDependencies;
         }
+    }
+    private static async void Wait(Request request)
+    {
+        await WaitForRequestCompletion(request);
     }
     private static async Task<PackageCollection> GetPackageCollection()
     {
@@ -66,7 +71,7 @@ public class InitializationInEditor : AssetPostprocessor
             return null;
         }
     }
-    private static async Task<StatusCode> WaitForRequestCompletion(ListRequest request)
+    private static async Task<StatusCode> WaitForRequestCompletion(Request request)
     {
         while (request.IsCompleted == false)
         {
