@@ -13,8 +13,5 @@
     "type": "git",
     "url": "https://github.com/dgw0103/AddressablesUtility.git"
   },
-  "dependencies": {
-    "https://github.com/dgw0103/UnityUtility.git": "0.0.0"
-  },
   "version": "0.0.0"
 }
